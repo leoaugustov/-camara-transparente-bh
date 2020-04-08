@@ -34,6 +34,14 @@
 		    <artifactId>mysql-connector-java</artifactId>
 		</dependency>
 		
+		<!-- 		APACHE COMMONS TEXT -->
+		<dependency>
+		    <groupId>org.apache.commons</groupId>
+		    <artifactId>commons-text</artifactId>
+		    <version>1.8</version>
+		</dependency>
+		
+		
 		<!-- 		LOMBOK -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
