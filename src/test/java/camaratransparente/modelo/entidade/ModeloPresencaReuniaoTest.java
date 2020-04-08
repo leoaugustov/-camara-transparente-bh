@@ -8,7 +8,7 @@ import java.time.YearMonth;
 
 import org.junit.Test;
 
-import camaratransparente.LegendaPresencaReuniao;
+import camaratransparente.modelo.LegendaPresencaReuniao;
 import camaratransparente.modelo.entidade.ModeloPresencaReuniao;
 import camaratransparente.modelo.entidade.ModeloVereador;
 

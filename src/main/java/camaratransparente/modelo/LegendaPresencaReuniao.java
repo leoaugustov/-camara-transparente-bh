@@ -1,4 +1,4 @@
-package camaratransparente;
+package camaratransparente.modelo;
 
 public enum LegendaPresencaReuniao {
 
