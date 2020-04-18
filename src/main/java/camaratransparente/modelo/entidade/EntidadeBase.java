@@ -7,13 +7,11 @@ import javax.persistence.MappedSuperclass;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 @MappedSuperclass
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString
 @Setter
 @Getter
@@ -22,7 +20,27 @@ public abstract class EntidadeBase {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
 	@GenericGenerator(name = "native", strategy = "native")
-	@EqualsAndHashCode.Include
 	private Long id;
 
+	
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		
+		if (! (obj instanceof EntidadeBase)) {
+			return false;
+		}
+		
+		EntidadeBase other = (EntidadeBase) obj;
+		return id != null && id.equals(other.getId());
+	}
+
+	@Override
+	public int hashCode() {
+		return 31;
+	}
+	
 }
