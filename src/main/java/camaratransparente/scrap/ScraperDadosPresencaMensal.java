@@ -15,9 +15,11 @@ import org.jsoup.select.Elements;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
+import camaratransparente.modelo.LegendaPresencaReuniao;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -86,9 +88,12 @@ public class ScraperDadosPresencaMensal {
 			Elements linha = tabela.select(".td_pad");
 			
 			for(Element coluna : colunas) {
-				int diaReuniao = Integer.parseInt(coluna.text());
 				String statusPresencao = linha.get(coluna.elementSiblingIndex()).text();
-				presencaMensal.adicionarPresenca(diaReuniao, statusPresencao);
+				
+				if(LegendaPresencaReuniao.isLegendaValida(statusPresencao)) {
+					int diaReuniao = Integer.parseInt(limparTextoDiaReuniao(coluna.text()));
+					presencaMensal.adicionarPresenca(diaReuniao, statusPresencao);
+				}	
 			}
 			
 			dados.add(presencaMensal);
@@ -141,11 +146,12 @@ public class ScraperDadosPresencaMensal {
 		
 		HttpHeaders headers = new HttpHeaders();
 		headers.setHost(new InetSocketAddress("www.cmbh.mg.gov.br", 0));
+		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+		headers.setContentLength(15);
 		
 		HttpEntity<String> requisicao = new HttpEntity<String>(body, headers);
-		
-		ResponseEntity<String> resposta = httpClient.exchange(URL_PESQUISA, HttpMethod.GET, requisicao, String.class);
-		return Jsoup.parse(resposta.getBody());
+		String resposta = httpClient.postForObject(URL_PESQUISA, requisicao, String.class);
+		return Jsoup.parse(resposta);
 	}
 	
 	/**
@@ -160,6 +166,21 @@ public class ScraperDadosPresencaMensal {
 		}
 		
 		return proximaDataExercicio;
+	}
+	
+	/**
+	 * Limpa o texto recebido removendo todo o texto após a primeira abertura de parênteses e também o parênteses.
+	 * @param texto - o texto para limpar
+	 * @return o texto limpo
+	 */
+	private String limparTextoDiaReuniao(String texto) {
+		int indiceAberturaParenteses = texto.indexOf("(");
+		
+		if(indiceAberturaParenteses == -1) {
+			return texto;
+		}
+		
+		return texto.substring(0, indiceAberturaParenteses).trim();
 	}
 	
 }
