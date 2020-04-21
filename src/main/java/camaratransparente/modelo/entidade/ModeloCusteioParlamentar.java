@@ -11,6 +11,7 @@ import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -19,6 +20,7 @@ import lombok.ToString;
 @Entity
 @Table(name = "custeio_parlamentar")
 @AllArgsConstructor
+@NoArgsConstructor
 public class ModeloCusteioParlamentar extends EntidadeBase {
 
 	@Column(nullable = false, columnDefinition = "date")

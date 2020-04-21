@@ -14,6 +14,7 @@ import javax.persistence.Table;
 
 import camaratransparente.modelo.LegendaPresencaReuniao;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -21,6 +22,7 @@ import lombok.ToString;
 @Setter
 @Entity
 @Table(name= "presenca_reuniao")
+@NoArgsConstructor
 public class ModeloPresencaReuniao extends EntidadeBase {
 
 	@Column(nullable = false)
@@ -41,6 +43,27 @@ public class ModeloPresencaReuniao extends EntidadeBase {
 		dataReuniao = dataExercicio.atDay(diaReuniao);
 		status = LegendaPresencaReuniao.valueOf(statusPresenca);
 		this.vereador = vereador;
+	}
+	
+	
+	
+	public boolean isFalta() {
+		if(status == null) {
+			return false;
+		}
+		
+		return status == LegendaPresencaReuniao.F;
+	}
+	
+	/**
+	 * Verifica se o status é de ausência justificada ou licença médica.
+	 */
+	public boolean isAusenciaJustificada() {
+		if(status == null) {
+			return false;
+		}
+		
+		return status == LegendaPresencaReuniao.AJ || status == LegendaPresencaReuniao.LM;
 	}
 	
 }

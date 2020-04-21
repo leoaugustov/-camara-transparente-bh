@@ -10,8 +10,8 @@ import camaratransparente.modelo.entidade.ModeloVereador;
 
 public interface RepositorioVereador extends JpaRepository<ModeloVereador, Long> {
 
-	@EntityGraph(attributePaths = {"custeios", "presencasReunioes"})
+	@EntityGraph(attributePaths = {"custeios"})
 	@Query("SELECT v FROM ModeloVereador v")
-	List<ModeloVereador> buscarTodosComCusteioComPresenca();
+	List<ModeloVereador> buscarTodosComCusteio();
 	
 }
