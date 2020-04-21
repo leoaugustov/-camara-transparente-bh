@@ -8,14 +8,12 @@ import java.util.Optional;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 @Getter
 @Setter
@@ -30,14 +28,12 @@ public class ModeloVereador extends EntidadeBase {
 	private String nomeCivil;
 	
 	@Column(nullable = false)
-	@Lob
-	@ToString.Exclude
-	private byte[] foto;
+	private String linkFoto;
 	
 	@Column(nullable = false)
 	private String partido;
 	
-	@Column(nullable = false)
+	@Column
 	private String email;
 	
 	@OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "vereador")
