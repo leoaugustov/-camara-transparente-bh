@@ -8,23 +8,27 @@ import lombok.Getter;
 @Getter
 public class EstatisticasPresencasReunioes {
 
-	private double frequencia = 1;
-	private int faltas = 0;
-	private int ausenciasJustificadas = 0;
+	private double frequencia;
+	private int faltas;
+	private int ausenciasJustificadas;
 	
 	
 	
 	public EstatisticasPresencasReunioes(List<ModeloPresencaReuniao> presencasReunioes) {
-		for(ModeloPresencaReuniao presenca : presencasReunioes) {
-			if(presenca.isFalta()) {
+		int presencas = 0;
+		
+		for(ModeloPresencaReuniao presencaReuniao : presencasReunioes) {
+			if(presencaReuniao.isPresenca()) {
+				presencas++;
+			}else if(presencaReuniao.isFalta()) {
 				faltas++;
-			}else if(presenca.isAusenciaJustificada()) {
+			}else if(presencaReuniao.isAusenciaJustificada()) {
 				ausenciasJustificadas++;
 			}
 		}
 		
 		if(presencasReunioes.size() != 0) {
-			frequencia = 1 - ((double) faltas + ausenciasJustificadas) / presencasReunioes.size();
+			frequencia = ((double) presencas / presencasReunioes.size());
 		}
 	}
 	
