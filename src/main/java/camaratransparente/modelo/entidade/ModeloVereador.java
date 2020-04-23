@@ -88,30 +88,6 @@ public class ModeloVereador extends EntidadeBase {
 				.map(YearMonth::from)
 				.max(YearMonth::compareTo);
 	}
-
-	public double getFrequencia() {
-		if(presencasReunioes.size() == 0) {
-			return 1;
-		}
-		
-		long quantidadeFaltas = presencasReunioes.stream()
-				.filter(presencaReuniao -> presencaReuniao.isFalta() || presencaReuniao.isAusenciaJustificada())
-				.count();
-		
-		return 1 - ((double) quantidadeFaltas / presencasReunioes.size());
-	}
-	
-	public long getQuantidadeFaltas() {
-		return presencasReunioes.stream()
-				.filter(ModeloPresencaReuniao::isFalta)
-				.count();
-	}
-	
-	public long getQuantidadeAusenciasJustificadas() {
-		return presencasReunioes.stream()
-				.filter(ModeloPresencaReuniao::isAusenciaJustificada)
-				.count();
-	}
 	
 	public double getMaiorCusteioMensal() {
 		return custeios.stream()

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import camaratransparente.modelo.EstatisticasPresencasReunioes;
 import camaratransparente.modelo.dto.ModeloVereadorDto;
 import camaratransparente.modelo.entidade.ModeloPresencaReuniao;
 import camaratransparente.modelo.entidade.ModeloVereador;
@@ -35,7 +36,7 @@ public class ServicoVereador {
 		List<ModeloVereador> vereadores = buscarComCusteioComPresenca();
 		
 		return vereadores.stream()
-				.map(ModeloVereadorDto::new)
+				.map(vereador -> new ModeloVereadorDto(vereador, new EstatisticasPresencasReunioes(vereador.getPresencasReunioes())))
 				.collect(Collectors.toList());
 	}
 	

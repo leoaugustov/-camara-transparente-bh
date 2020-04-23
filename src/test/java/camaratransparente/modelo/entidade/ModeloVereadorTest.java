@@ -58,68 +58,6 @@ public class ModeloVereadorTest {
 	}
 	
 	@Test
-	public void testarGetFrequencia_quando_naoPossuiInformacoesPresenca() {
-		ModeloVereador vereador = new ModeloVereador();
-		assertEquals(1, vereador.getFrequencia(), DELTA);
-	}
-	
-	@Test
-	public void testarGetFrequencia_quando_possuiInformacoesPresencaComFalta() {
-		ModeloVereador vereador = new ModeloVereador();
-		
-		ModeloPresencaReuniao presente = mock(ModeloPresencaReuniao.class);
-		vereador.adicionarPresencaReuniao(presente);
-		
-		ModeloPresencaReuniao falta = mock(ModeloPresencaReuniao.class);
-		when(falta.isFalta()).thenReturn(true);
-		vereador.adicionarPresencaReuniao(falta);
-		
-		assertEquals(0.5, vereador.getFrequencia(), DELTA);
-	}
-	
-	@Test
-	public void testarGetFrequencia_quando_possuiInformacoesPresencaComAusenciaJustificada() {
-		ModeloVereador vereador = new ModeloVereador();
-		
-		ModeloPresencaReuniao presente = mock(ModeloPresencaReuniao.class);
-		vereador.adicionarPresencaReuniao(presente);
-		
-		ModeloPresencaReuniao falta = mock(ModeloPresencaReuniao.class);
-		when(falta.isAusenciaJustificada()).thenReturn(true);
-		vereador.adicionarPresencaReuniao(falta);
-		
-		assertEquals(0.5, vereador.getFrequencia(), DELTA);
-	}
-	
-	@Test
-	public void testarGetQuantidadeFaltas_quando_possuiInformacoesPresencaComFalta() {
-		ModeloVereador vereador = new ModeloVereador();
-		
-		ModeloPresencaReuniao presente = mock(ModeloPresencaReuniao.class);
-		vereador.adicionarPresencaReuniao(presente);
-		
-		ModeloPresencaReuniao falta = mock(ModeloPresencaReuniao.class);
-		when(falta.isFalta()).thenReturn(true);
-		vereador.adicionarPresencaReuniao(falta);
-		
-		assertEquals(1, vereador.getQuantidadeFaltas());
-	}
-	
-	@Test
-	public void testarGetQuantidadeAusenciasJustificadas_quando_possuiInformacoesPresencaComAusenciaJustificada() {
-		ModeloVereador vereador = new ModeloVereador();
-		
-		ModeloPresencaReuniao presente = mock(ModeloPresencaReuniao.class);
-		vereador.adicionarPresencaReuniao(presente);
-		
-		ModeloPresencaReuniao falta = mock(ModeloPresencaReuniao.class);
-		when(falta.isAusenciaJustificada()).thenReturn(true);
-		vereador.adicionarPresencaReuniao(falta);
-		
-		assertEquals(1, vereador.getQuantidadeAusenciasJustificadas());
-	}
-	
-	@Test
 	public void testarGetMaiorCusteioMensal_quando_naoPossuiInformacoesCusteio() {
 		ModeloVereador vereador = new ModeloVereador();
 		assertEquals(0, vereador.getMaiorCusteioMensal(), DELTA);

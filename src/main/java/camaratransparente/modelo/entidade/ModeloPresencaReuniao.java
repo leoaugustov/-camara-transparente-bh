@@ -2,6 +2,7 @@ package camaratransparente.modelo.entidade;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
+import java.util.Optional;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -47,8 +48,20 @@ public class ModeloPresencaReuniao extends EntidadeBase {
 	
 	
 	
-	public boolean isFalta() {
+	public Optional<YearMonth> getDataExercicio() {
+		return Optional.ofNullable(dataReuniao).map(YearMonth::from);
+	}
+	
+	public boolean isPresenca() {
 		if(status == null) {
+			return false;
+		}
+		
+		return status == LegendaPresencaReuniao.P;
+	}
+	
+	public boolean isFalta() {
+		if(isPresenca()) {
 			return false;
 		}
 		
@@ -59,7 +72,7 @@ public class ModeloPresencaReuniao extends EntidadeBase {
 	 * Verifica se o status é de ausência justificada ou licença médica.
 	 */
 	public boolean isAusenciaJustificada() {
-		if(status == null) {
+		if(isPresenca()) {
 			return false;
 		}
 		
