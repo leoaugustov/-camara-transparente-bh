@@ -8,12 +8,14 @@ import java.util.Optional;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
@@ -28,7 +30,9 @@ public class ModeloVereador extends EntidadeBase {
 	private String nomeCivil;
 	
 	@Column(nullable = false)
-	private String linkFoto;
+	@Lob
+	@ToString.Exclude
+	private byte[] foto;
 	
 	@Column(nullable = false)
 	private String partido;

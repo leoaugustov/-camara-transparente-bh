@@ -1,10 +1,10 @@
 package camaratransparente.scrap;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import org.jsoup.Jsoup;
@@ -31,7 +31,7 @@ public class ScraperDadosVereadores {
 			ModeloVereador vereador = new ModeloVereador();
 			vereador.setNome(buscarNome(paginaVereador));
 			vereador.setNomeCivil(buscarNomeCivil(paginaVereador));
-			vereador.setLinkFoto(buscarLinkFoto(paginaVereador));
+			vereador.setFoto(buscarFoto(paginaVereador));
 			vereador.setPartido(buscarPartido(paginaVereador));
 			vereador.setEmail(buscarEmail(paginaVereador));
 			vereador.adicionarMandatos(buscarMandatos(paginaVereador));
@@ -52,8 +52,16 @@ public class ScraperDadosVereadores {
 		return paginaVereador.selectFirst(".field-name-field-nome-civil .field-item").text();
 	}
 	
-	private String buscarLinkFoto(Document paginaVereador) {
-		return paginaVereador.selectFirst(".views-field-field-foto img").attr("src");
+	private byte[] buscarFoto(Document paginaVereador) throws IOException {
+		String urlFoto = paginaVereador.selectFirst(".views-field-field-foto img").attr("src");
+		
+		byte[] imagem;
+		try(InputStream in = new URL(urlFoto).openStream()) {
+			imagem = new byte[in.available()];
+			in.read(imagem);
+		}
+	
+		return imagem;
 	}
 	
 	private String buscarPartido(Document paginaVereador) {
