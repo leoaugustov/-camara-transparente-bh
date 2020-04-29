@@ -1,5 +1,7 @@
 package camaratransparente.servico;
 
+import java.util.Base64;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -8,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import camaratransparente.error.exception.EntidadeNaoEncontradaException;
 import camaratransparente.modelo.EstatisticasPresencasReunioes;
 import camaratransparente.modelo.dto.ModeloVereadorDto;
 import camaratransparente.modelo.entidade.ModeloPresencaReuniao;
@@ -31,7 +34,7 @@ public class ServicoVereador {
 		repositorioVereador.saveAll(vereadores);
 	}
 	
-	@Transactional
+	@Transactional(readOnly = true)
 	public List<ModeloVereadorDto> listar() {
 		List<ModeloVereador> vereadores = buscarComCusteioComPresenca();
 		
@@ -40,7 +43,7 @@ public class ServicoVereador {
 				.collect(Collectors.toList());
 	}
 	
-	@Transactional
+	@Transactional(readOnly = true)
 	public List<ModeloVereador> buscarComCusteioComPresenca() {
 		List<ModeloVereador> vereadores = repositorioVereador.buscarTodosComCusteio();
 		
@@ -55,6 +58,16 @@ public class ServicoVereador {
 		}
 		
 		return vereadores;
+	}
+	
+	@Transactional(readOnly = true)
+	public Map<String, String> buscarFoto(Long idVereador) {
+		if(repositorioVereador.existsById(idVereador)) {
+			byte[] foto = repositorioVereador.buscarFotoPorId(idVereador);
+			return Collections.singletonMap("foto", Base64.getEncoder().encodeToString(foto));
+		}
+		
+		throw new EntidadeNaoEncontradaException(idVereador);
 	}
 	
 }
