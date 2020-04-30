@@ -18,12 +18,22 @@ public class EstatisticasPresencasReunioes {
 		int presencas = 0;
 		
 		for(ModeloPresencaReuniao presencaReuniao : presencasReunioes) {
-			if(presencaReuniao.isPresenca()) {
+			switch (presencaReuniao.getStatus()) {
+			case P:
 				presencas++;
-			}else if(presencaReuniao.isFalta()) {
+				break;
+
+			case F:
 				faltas++;
-			}else if(presencaReuniao.isAusenciaJustificada()) {
+				break;	
+				
+			case LM:
+			case AJ:
 				ausenciasJustificadas++;
+				break;		
+				
+			default:
+				break;
 			}
 		}
 		

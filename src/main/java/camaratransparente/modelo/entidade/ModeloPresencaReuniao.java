@@ -52,31 +52,4 @@ public class ModeloPresencaReuniao extends EntidadeBase {
 		return Optional.ofNullable(dataReuniao).map(YearMonth::from);
 	}
 	
-	public boolean isPresenca() {
-		if(status == null) {
-			return false;
-		}
-		
-		return status == LegendaPresencaReuniao.P;
-	}
-	
-	public boolean isFalta() {
-		if(isPresenca()) {
-			return false;
-		}
-		
-		return status == LegendaPresencaReuniao.F;
-	}
-	
-	/**
-	 * Verifica se o status é de ausência justificada ou licença médica.
-	 */
-	public boolean isAusenciaJustificada() {
-		if(isPresenca()) {
-			return false;
-		}
-		
-		return status == LegendaPresencaReuniao.AJ || status == LegendaPresencaReuniao.LM;
-	}
-	
 }
