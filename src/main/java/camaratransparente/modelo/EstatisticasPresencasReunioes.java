@@ -9,14 +9,14 @@ import lombok.Getter;
 public class EstatisticasPresencasReunioes {
 
 	private double frequencia;
+	private int presencas;
 	private int faltas;
 	private int ausenciasJustificadas;
+	private int licencasNaoRemuneradas;
 	
 	
 	
 	public EstatisticasPresencasReunioes(List<ModeloPresencaReuniao> presencasReunioes) {
-		int presencas = 0;
-		
 		for(ModeloPresencaReuniao presencaReuniao : presencasReunioes) {
 			switch (presencaReuniao.getStatus()) {
 			case P:
@@ -25,11 +25,15 @@ public class EstatisticasPresencasReunioes {
 
 			case F:
 				faltas++;
-				break;	
+				break;
 				
 			case LM:
 			case AJ:
 				ausenciasJustificadas++;
+				break;
+				
+			case SR:
+				licencasNaoRemuneradas++;
 				break;		
 				
 			default:

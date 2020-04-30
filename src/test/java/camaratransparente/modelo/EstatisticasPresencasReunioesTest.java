@@ -63,8 +63,78 @@ public class EstatisticasPresencasReunioesTest {
 	}
 	
 	@Test
+	public void testarGetFrequencia_quando_comUmaPresenca_comUmaLicencasNaoRemuneradas() {
+		ModeloPresencaReuniao presenca = criarPresenca();
+		ModeloPresencaReuniao licencanaoRemunerada = criarLicencanaoRemunerada();
+		
+		EstatisticasPresencasReunioes estatisticas = new EstatisticasPresencasReunioes(Arrays.asList(presenca, licencanaoRemunerada));
+		
+		assertEquals(0.5, estatisticas.getFrequencia(), DELTA);
+	}
+	
+	@Test
+	public void testarGetPresencas_quando_semPresencasReunioes() {
+		EstatisticasPresencasReunioes estatisticas = new EstatisticasPresencasReunioes(Collections.emptyList());
+		
+		assertEquals(0, estatisticas.getPresencas());
+	}
+	
+	@Test
+	public void testarGetPresencas_quando_comPresenca() {
+		ModeloPresencaReuniao presenca = criarPresenca();
+		
+		EstatisticasPresencasReunioes estatisticas = new EstatisticasPresencasReunioes(Arrays.asList(presenca));
+		
+		assertEquals(1, estatisticas.getPresencas());
+	}
+	
+	@Test
+	public void testarGetPresencas_quando_comFalta() {
+		ModeloPresencaReuniao falta = criarFalta();
+		
+		EstatisticasPresencasReunioes estatisticas = new EstatisticasPresencasReunioes(Arrays.asList(falta));
+		
+		assertEquals(0, estatisticas.getPresencas());
+	}
+	
+	@Test
+	public void testarGetPresencas_quando_comAusenciaJustificada() {
+		ModeloPresencaReuniao ausenciaJustificada = criarAusenciaJustificada();
+		
+		EstatisticasPresencasReunioes estatisticas = new EstatisticasPresencasReunioes(Arrays.asList(ausenciaJustificada));
+		
+		assertEquals(0, estatisticas.getPresencas());
+	}
+	
+	@Test
+	public void testarGetPresencas_quando_comLicencaMedica() {
+		ModeloPresencaReuniao licencaMedica = criarLicencaMedica();
+		
+		EstatisticasPresencasReunioes estatisticas = new EstatisticasPresencasReunioes(Arrays.asList(licencaMedica));
+		
+		assertEquals(0, estatisticas.getPresencas());
+	}
+	
+	@Test
+	public void testarGetPresencas_quando_comLicencasNaoRemuneradas() {
+		ModeloPresencaReuniao licencanaoRemunerada = criarLicencanaoRemunerada();
+		EstatisticasPresencasReunioes estatisticas = new EstatisticasPresencasReunioes(Arrays.asList(licencanaoRemunerada));
+		
+		assertEquals(0, estatisticas.getPresencas());
+	}
+	
+	@Test
 	public void testarGetFaltas_quando_semPresencasReunioes() {
 		EstatisticasPresencasReunioes estatisticas = new EstatisticasPresencasReunioes(Collections.emptyList());
+		
+		assertEquals(0, estatisticas.getFaltas());
+	}
+	
+	@Test
+	public void testarGetFaltas_quando_comPresenca() {
+		ModeloPresencaReuniao presenca = criarPresenca();
+		
+		EstatisticasPresencasReunioes estatisticas = new EstatisticasPresencasReunioes(Arrays.asList(presenca));
 		
 		assertEquals(0, estatisticas.getFaltas());
 	}
@@ -97,8 +167,25 @@ public class EstatisticasPresencasReunioesTest {
 	}
 	
 	@Test
+	public void testarGetFaltas_quando_comLicencasNaoRemuneradas() {
+		ModeloPresencaReuniao licencanaoRemunerada = criarLicencanaoRemunerada();
+		EstatisticasPresencasReunioes estatisticas = new EstatisticasPresencasReunioes(Arrays.asList(licencanaoRemunerada));
+		
+		assertEquals(0, estatisticas.getFaltas());
+	}
+	
+	@Test
 	public void testarGetAusenciasJustificadas_quando_semPresencasReunioes() {
 		EstatisticasPresencasReunioes estatisticas = new EstatisticasPresencasReunioes(Collections.emptyList());
+		
+		assertEquals(0, estatisticas.getAusenciasJustificadas());
+	}
+	
+	@Test
+	public void testarGetAusenciasJustificadas_quando_comPresenca() {
+		ModeloPresencaReuniao presenca = criarPresenca();
+		
+		EstatisticasPresencasReunioes estatisticas = new EstatisticasPresencasReunioes(Arrays.asList(presenca));
 		
 		assertEquals(0, estatisticas.getAusenciasJustificadas());
 	}
@@ -113,7 +200,7 @@ public class EstatisticasPresencasReunioesTest {
 	}
 	
 	@Test
-	public void testarGetAusenciasJustificadas_quando_statusAusenciaJustificada() {
+	public void testarGetAusenciasJustificadas_quando_comAusenciaJustificada() {
 		ModeloPresencaReuniao ausenciaJustificada = criarAusenciaJustificada();
 		
 		EstatisticasPresencasReunioes estatisticas = new EstatisticasPresencasReunioes(Arrays.asList(ausenciaJustificada));
@@ -122,12 +209,67 @@ public class EstatisticasPresencasReunioesTest {
 	}
 	
 	@Test
-	public void testarGetAusenciasJustificadas_quando_statusLicencaMedica() {
+	public void testarGetAusenciasJustificadas_quando_comLicencaMedica() {
 		ModeloPresencaReuniao licencaMedica = criarLicencaMedica();
 		
 		EstatisticasPresencasReunioes estatisticas = new EstatisticasPresencasReunioes(Arrays.asList(licencaMedica));
 		
 		assertEquals(1, estatisticas.getAusenciasJustificadas());
+	}
+	
+	@Test
+	public void testarGetAusenciasJustificadas_quando_comLicencasNaoRemuneradas() {
+		ModeloPresencaReuniao licencanaoRemunerada = criarLicencanaoRemunerada();
+		EstatisticasPresencasReunioes estatisticas = new EstatisticasPresencasReunioes(Arrays.asList(licencanaoRemunerada));
+		
+		assertEquals(0, estatisticas.getAusenciasJustificadas());
+	}
+	
+	@Test
+	public void testarGetLicencasNaoRemuneradas_quando_semPresencasReunioes() {
+		EstatisticasPresencasReunioes estatisticas = new EstatisticasPresencasReunioes(Collections.emptyList());
+		
+		assertEquals(0, estatisticas.getLicencasNaoRemuneradas());
+	}
+	
+	@Test
+	public void testarGetLicencasNaoRemuneradas_quando_comPresenca() {
+		ModeloPresencaReuniao presenca = criarPresenca();
+		EstatisticasPresencasReunioes estatisticas = new EstatisticasPresencasReunioes(Arrays.asList(presenca));
+		
+		assertEquals(0, estatisticas.getLicencasNaoRemuneradas());
+	}
+	
+	@Test
+	public void testarGetLicencasNaoRemuneradas_quando_comFalta() {
+		ModeloPresencaReuniao falta = criarFalta();
+		EstatisticasPresencasReunioes estatisticas = new EstatisticasPresencasReunioes(Arrays.asList(falta));
+		
+		assertEquals(0, estatisticas.getLicencasNaoRemuneradas());
+	}
+	
+	@Test
+	public void testarGetLicencasNaoRemuneradas_quando_comAusenciaJustificada() {
+		ModeloPresencaReuniao ausenciaJustificada = criarAusenciaJustificada();
+		EstatisticasPresencasReunioes estatisticas = new EstatisticasPresencasReunioes(Arrays.asList(ausenciaJustificada));
+		
+		assertEquals(0, estatisticas.getLicencasNaoRemuneradas());
+	}
+	
+	@Test
+	public void testarGetLicencasNaoRemuneradas_quando_comLicencaMedica() {
+		ModeloPresencaReuniao licencaMedica = criarLicencaMedica();
+		EstatisticasPresencasReunioes estatisticas = new EstatisticasPresencasReunioes(Arrays.asList(licencaMedica));
+		
+		assertEquals(0, estatisticas.getLicencasNaoRemuneradas());
+	}
+	
+	@Test
+	public void testarGetLicencasNaoRemuneradas_quando_comLicencasNaoRemuneradas() {
+		ModeloPresencaReuniao licencanaoRemunerada = criarLicencanaoRemunerada();
+		EstatisticasPresencasReunioes estatisticas = new EstatisticasPresencasReunioes(Arrays.asList(licencanaoRemunerada));
+		
+		assertEquals(1, estatisticas.getLicencasNaoRemuneradas());
 	}
 	
 	
@@ -159,6 +301,12 @@ public class EstatisticasPresencasReunioesTest {
 		
 		return ausenciaJustificada;
 	}
-			
+	
+	private ModeloPresencaReuniao criarLicencanaoRemunerada() {
+		ModeloPresencaReuniao licencaNaoRemunerada = mock(ModeloPresencaReuniao.class);
+		when(licencaNaoRemunerada.getStatus()).thenReturn(LegendaPresencaReuniao.SR);
+		
+		return licencaNaoRemunerada;
+	}
 			
 }
