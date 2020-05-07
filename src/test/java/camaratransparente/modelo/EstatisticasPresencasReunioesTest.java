@@ -6,6 +6,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 import org.junit.Test;
 
@@ -270,6 +271,22 @@ public class EstatisticasPresencasReunioesTest {
 		EstatisticasPresencasReunioes estatisticas = new EstatisticasPresencasReunioes(Arrays.asList(licencanaoRemunerada));
 		
 		assertEquals(1, estatisticas.getLicencasNaoRemuneradas());
+	}
+	
+	@Test
+	public void testarGetTotalAusencias_quando_comFalta_comLicencasNaoRemuneradas_comAusenciaJustificada_comPresenca() {
+		ModeloPresencaReuniao presenca = criarPresenca();
+		ModeloPresencaReuniao falta = criarFalta();
+		ModeloPresencaReuniao licencanaoRemunerada = criarLicencanaoRemunerada();
+		ModeloPresencaReuniao ausenciaJustificada = criarAusenciaJustificada();
+		ModeloPresencaReuniao licencaMedica = criarLicencaMedica();
+		
+		List<ModeloPresencaReuniao> lsPresencasReunioes = Arrays.asList(presenca, falta, 
+				licencaMedica, ausenciaJustificada, licencanaoRemunerada);
+		
+		EstatisticasPresencasReunioes estatisticas = new EstatisticasPresencasReunioes(lsPresencasReunioes);
+		
+		assertEquals(4, estatisticas.getTotalAusencias());
 	}
 	
 	

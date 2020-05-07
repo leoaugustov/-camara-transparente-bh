@@ -11,16 +11,16 @@ public class ModeloVereadorDto {
 	private final String nome;
 	private final double maiorCusteioMensal;
 	private final double custeioTotal;
-	private final EstatisticasPresencasReunioes estatisticasPresencasReunioes;
+	private final EstatisticasPresencasReunioes estatisticasPresencas;
 	
 	
 	
-	public ModeloVereadorDto(ModeloVereador vereador, EstatisticasPresencasReunioes estatisticasPresencasReunioes) {
+	public ModeloVereadorDto(ModeloVereador vereador, EstatisticasPresencasReunioes estatisticasPresencas) {
 		id = vereador.getId();
 		nome = vereador.getNome();
 		maiorCusteioMensal = vereador.getMaiorCusteioMensal();
 		custeioTotal = vereador.getCusteioTotal();
-		this.estatisticasPresencasReunioes = estatisticasPresencasReunioes;
+		this.estatisticasPresencas = estatisticasPresencas;
 	}
 	
 }

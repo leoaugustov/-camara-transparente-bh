@@ -2,6 +2,8 @@ package camaratransparente.modelo;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import camaratransparente.modelo.entidade.ModeloPresencaReuniao;
 import lombok.Getter;
 
@@ -44,6 +46,13 @@ public class EstatisticasPresencasReunioes {
 		if(presencasReunioes.size() != 0) {
 			frequencia = ((double) presencas / presencasReunioes.size());
 		}
+	}
+	
+	
+	
+	@JsonProperty
+	public int getTotalAusencias() {
+		return faltas + ausenciasJustificadas + licencasNaoRemuneradas;
 	}
 	
 }
