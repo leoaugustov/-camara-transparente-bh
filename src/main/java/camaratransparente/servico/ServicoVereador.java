@@ -1,15 +1,15 @@
 package camaratransparente.servico;
 
-import java.util.Base64;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilderFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import camaratransparente.controller.ControllerVereadores;
 import camaratransparente.error.exception.EntidadeNaoEncontradaException;
 import camaratransparente.modelo.EstatisticasPresencasReunioes;
 import camaratransparente.modelo.dto.ModeloVereadorDto;
@@ -17,15 +17,15 @@ import camaratransparente.modelo.entidade.ModeloPresencaReuniao;
 import camaratransparente.modelo.entidade.ModeloVereador;
 import camaratransparente.repositorio.RepositorioPresencaReuniao;
 import camaratransparente.repositorio.RepositorioVereador;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class ServicoVereador {
 
-	@Autowired
-	private RepositorioVereador repositorioVereador;
-	
-	@Autowired
-	private RepositorioPresencaReuniao repositorioPresencaReuniao;
+	private final RepositorioVereador repositorioVereador;
+	private final RepositorioPresencaReuniao repositorioPresencaReuniao;
+	private final WebMvcLinkBuilderFactory linkBuilderFactory;
 	
 	
 	
@@ -38,9 +38,17 @@ public class ServicoVereador {
 	public List<ModeloVereadorDto> listar() {
 		List<ModeloVereador> vereadores = buscarComCusteioComPresenca();
 		
-		return vereadores.stream()
-				.map(vereador -> new ModeloVereadorDto(vereador, new EstatisticasPresencasReunioes(vereador.getPresencasReunioes())))
-				.collect(Collectors.toList());
+		List<ModeloVereadorDto> vereadoresDto = new ArrayList<>();
+		for(ModeloVereador vereador : vereadores) {
+			String linkFoto = linkBuilderFactory.linkTo(ControllerVereadores.class)
+					.slash(vereador.getId())
+					.slash("foto")
+					.toUri().toString();
+			
+			vereadoresDto.add(new ModeloVereadorDto(vereador, linkFoto, new EstatisticasPresencasReunioes(vereador.getPresencasReunioes())));
+		}
+		
+		return vereadoresDto;
 	}
 	
 	@Transactional(readOnly = true)
@@ -61,10 +69,9 @@ public class ServicoVereador {
 	}
 	
 	@Transactional(readOnly = true)
-	public Map<String, String> buscarFoto(Long idVereador) {
+	public byte[] buscarFoto(Long idVereador) {
 		if(repositorioVereador.existsById(idVereador)) {
-			byte[] foto = repositorioVereador.buscarFotoPorId(idVereador);
-			return Collections.singletonMap("foto", Base64.getEncoder().encodeToString(foto));
+			return repositorioVereador.buscarFotoPorId(idVereador);
 		}
 		
 		throw new EntidadeNaoEncontradaException(idVereador);

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,7 +29,7 @@ public class ControllerVereadores {
 		return new ResponseEntity<>(servicoVereador.listar(), HttpStatus.OK);
 	}
 	
-	@GetMapping("/{id}/foto")
+	@GetMapping(path = "/{id}/foto", produces = MediaType.IMAGE_PNG_VALUE)
 	public ResponseEntity<?> pegarFoto(@PathVariable("id") Long id) {
 		HttpHeaders cabecalhos = new HttpHeaders();
 		cabecalhos.setCacheControl(CacheControl.maxAge(12, TimeUnit.HOURS));
