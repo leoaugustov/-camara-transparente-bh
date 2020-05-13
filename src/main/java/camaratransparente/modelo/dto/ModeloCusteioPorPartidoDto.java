@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 public class ModeloCusteioPorPartidoDto {
 
 	private final String siglaPartido;
+	private final long quantidadeVereadores;
 	private final double custeio;
 	
 }

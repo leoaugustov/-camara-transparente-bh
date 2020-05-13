@@ -2,6 +2,8 @@ package camaratransparente.servico;
 
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.counting;
 
 import java.util.List;
 import java.util.Map;
@@ -24,13 +26,19 @@ public class ServicoCusteioParlamentar {
 	
 	@Transactional(readOnly = true)
 	public List<ModeloCusteioPorPartidoDto> listarPorPartido() {
-		Map<String, Double> custeioPorPartido = repositorioVereador.buscarTodosComCusteio().stream()
+		List<ModeloVereador> vereadores = repositorioVereador.buscarTodosComCusteio();
+		
+		Map<String, Double> custeioPorPartido = vereadores.stream()
 				.collect(toMap(ModeloVereador::getPartido, ModeloVereador::getCusteioTotal, Double::sum));
+		
+		Map<String, Long> quantidadeVereadoresPorPartido = vereadores.stream()
+				.collect(groupingBy(ModeloVereador::getPartido, counting()));
 		
 		return custeioPorPartido.entrySet().stream().map(entry -> {
 			String siglaPartido = entry.getKey().split("-")[0];
+			long quantidadeVereadores = quantidadeVereadoresPorPartido.get(entry.getKey());
 			
-			return new ModeloCusteioPorPartidoDto(siglaPartido.trim(), entry.getValue());
+			return new ModeloCusteioPorPartidoDto(siglaPartido.trim(), quantidadeVereadores, entry.getValue());
 		}).collect(toList());
 	}
 	
