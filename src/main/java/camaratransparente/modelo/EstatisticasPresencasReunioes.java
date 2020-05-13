@@ -1,6 +1,7 @@
 package camaratransparente.modelo;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -10,6 +11,7 @@ import lombok.Getter;
 @Getter
 public class EstatisticasPresencasReunioes {
 
+	private long quantidadeExercicios;
 	private double frequencia;
 	private int presencas;
 	private int faltas;
@@ -19,6 +21,12 @@ public class EstatisticasPresencasReunioes {
 	
 	
 	public EstatisticasPresencasReunioes(List<ModeloPresencaReuniao> presencasReunioes) {
+		quantidadeExercicios = presencasReunioes.stream()
+				.map(ModeloPresencaReuniao::getDataExercicio)
+				.map(Optional::get)
+				.distinct()
+				.count();
+		
 		for(ModeloPresencaReuniao presencaReuniao : presencasReunioes) {
 			switch (presencaReuniao.getStatus()) {
 			case P:

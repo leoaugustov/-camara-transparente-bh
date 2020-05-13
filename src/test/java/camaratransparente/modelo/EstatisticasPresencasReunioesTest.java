@@ -4,9 +4,12 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.time.Month;
+import java.time.YearMonth;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.Test;
 
@@ -17,6 +20,32 @@ public class EstatisticasPresencasReunioesTest {
 	private static final double DELTA = 0.001;
 	
 	
+	
+	@Test
+	public void testarGetQuantidadeExercicios_quando_comDuasPresencasEmExerciciosDiferentes() {
+		ModeloPresencaReuniao presenca1 = criarPresenca();
+		when(presenca1.getDataExercicio()).thenReturn(Optional.of(YearMonth.of(2019, Month.SEPTEMBER)));
+		
+		ModeloPresencaReuniao presenca2 = criarPresenca();
+		when(presenca2.getDataExercicio()).thenReturn(Optional.of(YearMonth.of(2019, Month.OCTOBER)));
+		
+		EstatisticasPresencasReunioes estatisticas = new EstatisticasPresencasReunioes(Arrays.asList(presenca1, presenca2));
+		
+		assertEquals(2, estatisticas.getQuantidadeExercicios());
+	}
+	
+	@Test
+	public void testarGetQuantidadeExercicios_quando_comDuasFaltasEmExerciciosDiferentes() {
+		ModeloPresencaReuniao falta1 = criarFalta();
+		when(falta1.getDataExercicio()).thenReturn(Optional.of(YearMonth.of(2019, Month.SEPTEMBER)));
+		
+		ModeloPresencaReuniao falta2 = criarFalta();
+		when(falta2.getDataExercicio()).thenReturn(Optional.of(YearMonth.of(2019, Month.OCTOBER)));
+		
+		EstatisticasPresencasReunioes estatisticas = new EstatisticasPresencasReunioes(Arrays.asList(falta1, falta2));
+		
+		assertEquals(2, estatisticas.getQuantidadeExercicios());
+	}
 	
 	@Test
 	public void testarGetFrequencia_quando_semPresencasReunioes() {
@@ -294,6 +323,7 @@ public class EstatisticasPresencasReunioesTest {
 	private ModeloPresencaReuniao criarPresenca() {
 		ModeloPresencaReuniao presenca = mock(ModeloPresencaReuniao.class);
 		when(presenca.getStatus()).thenReturn(LegendaPresencaReuniao.P);
+		when(presenca.getDataExercicio()).thenReturn(Optional.of(YearMonth.now()));
 		
 		return presenca;
 	}
@@ -301,6 +331,7 @@ public class EstatisticasPresencasReunioesTest {
 	private ModeloPresencaReuniao criarFalta() {
 		ModeloPresencaReuniao falta = mock(ModeloPresencaReuniao.class);
 		when(falta.getStatus()).thenReturn(LegendaPresencaReuniao.F);
+		when(falta.getDataExercicio()).thenReturn(Optional.of(YearMonth.now()));
 		
 		return falta;
 	}
@@ -308,6 +339,7 @@ public class EstatisticasPresencasReunioesTest {
 	private ModeloPresencaReuniao criarLicencaMedica() {
 		ModeloPresencaReuniao licencaMedica = mock(ModeloPresencaReuniao.class);
 		when(licencaMedica.getStatus()).thenReturn(LegendaPresencaReuniao.LM);
+		when(licencaMedica.getDataExercicio()).thenReturn(Optional.of(YearMonth.now()));
 		
 		return licencaMedica;
 	}
@@ -315,6 +347,7 @@ public class EstatisticasPresencasReunioesTest {
 	private ModeloPresencaReuniao criarAusenciaJustificada() {
 		ModeloPresencaReuniao ausenciaJustificada = mock(ModeloPresencaReuniao.class);
 		when(ausenciaJustificada.getStatus()).thenReturn(LegendaPresencaReuniao.AJ);
+		when(ausenciaJustificada.getDataExercicio()).thenReturn(Optional.of(YearMonth.now()));
 		
 		return ausenciaJustificada;
 	}
@@ -322,6 +355,7 @@ public class EstatisticasPresencasReunioesTest {
 	private ModeloPresencaReuniao criarLicencanaoRemunerada() {
 		ModeloPresencaReuniao licencaNaoRemunerada = mock(ModeloPresencaReuniao.class);
 		when(licencaNaoRemunerada.getStatus()).thenReturn(LegendaPresencaReuniao.SR);
+		when(licencaNaoRemunerada.getDataExercicio()).thenReturn(Optional.of(YearMonth.now()));
 		
 		return licencaNaoRemunerada;
 	}
