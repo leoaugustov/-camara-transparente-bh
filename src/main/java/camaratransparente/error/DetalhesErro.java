@@ -5,16 +5,12 @@ import java.time.LocalDateTime;
 
 import org.springframework.http.HttpStatus;
 
-import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
 public class DetalhesErro {
 
-	@Setter(AccessLevel.NONE)
-	private long timestamp;
-	
+	private final long timestamp;
 	private final int status;
 	private final String titulo;
 	private final String detalhes;
