@@ -52,8 +52,10 @@ public class VinculacaoDados {
 				YearMonth dataExercicio = dadoPresencaMensal.getDataExercicio();
 				
 				for(Entry<Integer, String> presenca : dadoPresencaMensal.getPresencaMensal().entrySet()) {
-					vereador.get().adicionarPresencaReuniao(new ModeloPresencaReuniao(dataExercicio, 
-							presenca.getKey(), presenca.getValue(), vereador.get()));
+					int diaReuniao = presenca.getKey();
+					String status = presenca.getValue().trim().replace(" ", "_");
+					
+					vereador.get().adicionarPresencaReuniao(new ModeloPresencaReuniao(dataExercicio, diaReuniao, status, vereador.get()));
 				}
 			}
 		}

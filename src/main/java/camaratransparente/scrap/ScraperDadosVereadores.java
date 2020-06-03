@@ -1,12 +1,12 @@
 package camaratransparente.scrap;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.commons.io.IOUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -19,7 +19,7 @@ public class ScraperDadosVereadores {
 
 	private static final String URL_VEREADORES = "https://www.cmbh.mg.gov.br/vereadores";
 	
-	public List<ModeloVereador> buscarVereadores() throws IOException {
+	public List<ModeloVereador> buscarVereadores() throws IOException, InterruptedException {
 		Document paginaVereadores = Jsoup.connect(URL_VEREADORES).get();
 		Elements links = paginaVereadores.select(".view-vereadores .vereador .views-field-title a");
 		
@@ -37,6 +37,8 @@ public class ScraperDadosVereadores {
 			vereador.adicionarMandatos(buscarMandatos(paginaVereador));
 			
 			vereadores.add(vereador);
+			
+			Thread.sleep(1500); // aguarda para evitar a sobrecarga do site
 		}
 		
 		return vereadores;
@@ -55,13 +57,7 @@ public class ScraperDadosVereadores {
 	private byte[] buscarFoto(Document paginaVereador) throws IOException {
 		String urlFoto = paginaVereador.selectFirst(".views-field-field-foto img").attr("src");
 		
-		byte[] imagem;
-		try(InputStream in = new URL(urlFoto).openStream()) {
-			imagem = new byte[in.available()];
-			in.read(imagem);
-		}
-	
-		return imagem;
+		return IOUtils.toByteArray(new URL(urlFoto).openStream());
 	}
 	
 	private String buscarPartido(Document paginaVereador) {
