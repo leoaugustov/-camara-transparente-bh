@@ -143,7 +143,7 @@ public class VinculacaoDadosTest {
 		CusteioParlamentarMensal custeio = mock(CusteioParlamentarMensal.class);
 		when(custeio.getNomeVereador()).thenReturn(referenciaVereador);
 		
-		when(algoritmoCalculoSimilaridade.apply(any(String.class), any(String.class))).thenReturn(0.09);
+		when(algoritmoCalculoSimilaridade.apply(any(String.class), any(String.class))).thenReturn(0.905);
 		
 		servicoVinculacaoDados.vincular(asList(vereador), asList(custeio), Collections.emptyList());
 		verify(vereador).adicionarCusteio(any(ModeloCusteioParlamentar.class));
@@ -257,7 +257,7 @@ public class VinculacaoDadosTest {
 		when(presenca.getNomeVereador()).thenReturn(referenciaVereador);
 		when(presenca.getPresencaMensal()).thenReturn(Collections.singletonMap(2, "P"));
 		
-		when(algoritmoCalculoSimilaridade.apply(any(String.class), any(String.class))).thenReturn(0.09);
+		when(algoritmoCalculoSimilaridade.apply(any(String.class), any(String.class))).thenReturn(0.905);
 		
 		servicoVinculacaoDados.vincular(asList(vereador), Collections.emptyList(), asList(presenca));
 		verify(vereador).adicionarPresencaReuniao(any(ModeloPresencaReuniao.class));
