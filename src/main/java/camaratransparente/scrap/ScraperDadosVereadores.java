@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.apache.commons.io.IOUtils;
 import org.jsoup.Jsoup;
@@ -12,7 +11,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import camaratransparente.modelo.entidade.ModeloMandato;
 import camaratransparente.modelo.entidade.ModeloVereador;
 
 public class ScraperDadosVereadores {
@@ -33,8 +31,6 @@ public class ScraperDadosVereadores {
 			vereador.setNomeCivil(buscarNomeCivil(paginaVereador));
 			vereador.setFoto(buscarFoto(paginaVereador));
 			vereador.setPartido(buscarPartido(paginaVereador));
-			vereador.setEmail(buscarEmail(paginaVereador));
-			vereador.adicionarMandatos(buscarMandatos(paginaVereador));
 			
 			vereadores.add(vereador);
 			
@@ -62,26 +58,6 @@ public class ScraperDadosVereadores {
 	
 	private String buscarPartido(Document paginaVereador) {
 		return paginaVereador.selectFirst(".field-name-partido-composto .field-item").text();
-	}
-	
-	private String buscarEmail(Document paginaVereador) {
-		return Optional.ofNullable(paginaVereador.selectFirst(".views-field-field-email a"))
-				.map(Element::text)
-				.orElse(null);
-	}
-	
-	private List<ModeloMandato> buscarMandatos(Document paginaVereador) {
-		Elements spansMandatos = paginaVereador.select(".field-name-field-periodo .date-display-range");
-		
-		List<ModeloMandato> mandatos = new ArrayList<>();
-		for(Element spanMandato : spansMandatos) {
-			int inicioMandato = Integer.parseInt(spanMandato.selectFirst(".date-display-start").text());
-			int finalMandato = Integer.parseInt(spanMandato.selectFirst(".date-display-end").text());
-			
-			mandatos.add(new ModeloMandato(inicioMandato, finalMandato));
-		}
-		
-		return mandatos;
 	}
 	
 }

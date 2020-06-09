@@ -36,13 +36,6 @@ public class ModeloVereador extends EntidadeBase {
 	
 	@Column(nullable = false)
 	private String partido;
-	
-	@Column
-	private String email;
-	
-	@OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "vereador")
-	@Setter(AccessLevel.NONE)
-	private List<ModeloMandato> mandatos = new ArrayList<>();
 
 	@OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "vereador")
 	@Setter(AccessLevel.NONE)
@@ -62,14 +55,6 @@ public class ModeloVereador extends EntidadeBase {
 	public void adicionarPresencaReuniao(ModeloPresencaReuniao presenca) {
 		presenca.setVereador(this);
 		presencasReunioes.add(presenca);
-	}
-	
-	public void adicionarMandatos(List<ModeloMandato> mandatos) {
-		mandatos.forEach(mandato -> {
-			mandato.setVereador(this);
-			this.mandatos.add(mandato);
-		});
-		this.mandatos.addAll(mandatos);
 	}
 	
 	/**
