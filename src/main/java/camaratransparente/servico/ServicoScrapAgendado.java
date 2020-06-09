@@ -6,7 +6,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 
+@Log4j2
 @Service
 @RequiredArgsConstructor
 public class ServicoScrapAgendado {
@@ -21,8 +23,9 @@ public class ServicoScrapAgendado {
 	private void realizarScrap() {
 		try {
 			servicoScrap.realizarScrap();
+			log.info("Scrap agendado realizado com sucesso!");
 		}catch(IOException | InterruptedException e) {
-			e.printStackTrace();
+			log.error("Problema ao realizar o scrap agendado.", e);
 		}
 	}
 	

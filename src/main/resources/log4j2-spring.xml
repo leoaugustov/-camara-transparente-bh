@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+	<Appenders>
+	
+	    <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%date{dd/MM/yyyy HH:mm:ss} %level [%t] %C: %msg%n%throwable"/>
+        </Console>
+        
+        <RollingFile name="ArquivoInformacoes" fileName="./logs/rastreamento/app-rastreamento.log" 
+        	filePattern="./logs/rastreamento/$${date:yyyyMM}/app-rastreamento %d{yyyyMMdd HHmmss}.log.gz">
+            <PatternLayout>
+                <pattern>%date{dd/MM/yyyy HH:mm:ss}; %level; %msg%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="10 MB"/>
+            </Policies>
+            <Filters>
+            	<ThresholdFilter level="ERROR" onMatch="DENY" onMismatch="NEUTRAL"/>
+            	<ThresholdFilter level="FATAL" onMatch="DENY" onMismatch="NEUTRAL"/>
+            	<ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
+            	<ThresholdFilter level="WARN" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>	
+        </RollingFile>
+        
+        <RollingFile name="ArquivoErro" fileName="./logs/erro/app-erro.log" 
+            filePattern="./logs/erro/$${date:yyyyMM}/app-erro %d{yyyyMMdd HHmmss}.log.gz">
+            <PatternLayout>
+                <pattern>%date{dd/MM/yyyy HH:mm:ss}; %level; %C{2}; %msg%n%throwable%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="10 MB"/>
+            </Policies>
+            <Filters>
+            	<ThresholdFilter level="ERROR"/>
+            </Filters>	
+        </RollingFile>
+        
+	</Appenders>
+	
+	<Loggers>
+	
+	    <Root level="INFO">
+            <AppenderRef ref="Console"/>
+        </Root>
+        
+		<Logger level="INFO" name="camaratransparente" additivity="false">
+			<AppenderRef ref="Console"/>
+			<AppenderRef ref="ArquivoInformacoes"/>
+			<AppenderRef ref="ArquivoErro"/>
+		</Logger>
+		
+	</Loggers>
+	
+</Configuration>

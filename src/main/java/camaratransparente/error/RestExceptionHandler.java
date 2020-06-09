@@ -12,7 +12,9 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import camaratransparente.error.exception.EntidadeNaoEncontradaException;
+import lombok.extern.log4j.Log4j2;
 
+@Log4j2
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
@@ -25,7 +27,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 	@Override
 	protected ResponseEntity<Object> handleExceptionInternal(Exception ex, @Nullable Object body, 
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
-
+		log.error("Erro interno.", ex);
 		DetalhesErro detalhesErro = new DetalhesErro(status.value(), status.getReasonPhrase(), ex.getMessage());
 		return new ResponseEntity<>(detalhesErro, headers, status);
 	}
