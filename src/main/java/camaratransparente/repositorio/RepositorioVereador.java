@@ -14,6 +14,10 @@ public interface RepositorioVereador extends JpaRepository<ModeloVereador, Long>
 	@Query("SELECT v FROM ModeloVereador v")
 	List<ModeloVereador> buscarTodosComCusteio();
 	
+	@EntityGraph(attributePaths = {"presencasReunioes"})
+	@Query("SELECT v FROM ModeloVereador v")
+	List<ModeloVereador> buscarTodosComPresencasReunioes();
+	
 	@Query("SELECT v.foto FROM ModeloVereador v WHERE v.id = ?1")
 	byte[] buscarFotoPorId(Long id);
 	

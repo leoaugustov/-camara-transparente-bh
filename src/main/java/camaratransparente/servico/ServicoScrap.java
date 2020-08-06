@@ -28,46 +28,42 @@ public class ServicoScrap {
 	private final ScraperDadosVereadores scraperDadosVereadores;
 	private final ScraperDadosCusteioParlamentar scraperDadosCusteioParlamentar;
 	private final ScraperDadosPresencaMensal scraperDadosPresencaMensal;
-	private final VinculacaoDados servicoVinculacaoDados;
+	private final VinculacaoDados vinculacaoDados;
 	
 
 	
 	@Transactional(rollbackFor = Exception.class)
 	public void realizarScrap() throws IOException, InterruptedException {
 		Optional<ModeloScrap> ultimoScrap = repositorioScrap.findTopByOrderByIdDesc();
-		Optional<YearMonth> ultimaDataBuscadaCusteio = ultimoScrap
+		Optional<YearMonth> maiorDataCusteioBuscadaUltimaVez = ultimoScrap
 				.map(ModeloScrap::getUltimaDataBuscadaCusteio);
 		
-		Optional<YearMonth> ultimoExercicioBuscadoPresenca = ultimoScrap
+		Optional<YearMonth> maiorExercicioPresencaBuscadoUltimaVez = ultimoScrap
 				.map(ModeloScrap::getUltimoExercicioBuscadoPresenca);
+		
+		List<CusteioParlamentarMensal> dadosCusteioParlamentar = buscarDadosCusteioParlamentar(maiorDataCusteioBuscadaUltimaVez);
+		List<PresencaMensalIndividual> dadosPresenca = buscarDadosPresenca(maiorExercicioPresencaBuscadoUltimaVez);
+		
+		Optional<YearMonth> maiorDataCusteioBuscadaAgora = dadosCusteioParlamentar.stream()
+				.map(CusteioParlamentarMensal::getDataReferencia)
+				.max(YearMonth::compareTo);
+		
+		Optional<YearMonth> maiorDataPresencaBuscadaAgora = dadosPresenca.stream()
+				.map(PresencaMensalIndividual::getDataExercicio)
+				.max(YearMonth::compareTo);
 		
 		List<ModeloVereador> vereadores;
 		if(ultimoScrap.isPresent()) {
-			vereadores = servicoVereador.buscarComCusteioComPresenca();
+			vereadores = servicoVereador.buscar();
 		}else {
 			vereadores = scraperDadosVereadores.buscarVereadores();
 		}
 		
-		List<CusteioParlamentarMensal> dadosCusteioParlamentar = buscarDadosCusteioParlamentar(ultimaDataBuscadaCusteio);
-		List<PresencaMensalIndividual> dadosPresenca = buscarDadosPresenca(ultimoExercicioBuscadoPresenca);
-		
-		vereadores = servicoVinculacaoDados.vincular(vereadores, dadosCusteioParlamentar, dadosPresenca);
-		
+		vereadores = vinculacaoDados.vincular(vereadores, dadosCusteioParlamentar, dadosPresenca);
 		servicoVereador.salvar(vereadores);
 		
-		YearMonth maiorDataReferenciaCusteio = vereadores.stream()
-				.map(ModeloVereador::getMaiorDataReferenciaCusteio)
-				.filter(Optional::isPresent)
-				.map(Optional::get)
-				.max(YearMonth::compareTo).orElse(null);
-		
-		YearMonth maiorDataExercicioPresenca = vereadores.stream()
-				.map(ModeloVereador::getMaiorDataExercicioPresenca)
-				.filter(Optional::isPresent)
-				.map(Optional::get)
-				.max(YearMonth::compareTo).orElse(null);
-		
-		repositorioScrap.save(new ModeloScrap(maiorDataReferenciaCusteio, maiorDataExercicioPresenca));
+		repositorioScrap.save(new ModeloScrap(maiorDataCusteioBuscadaAgora.orElseGet(maiorDataCusteioBuscadaUltimaVez::get), 
+				maiorDataPresencaBuscadaAgora.orElseGet(maiorExercicioPresencaBuscadoUltimaVez::get)));
 	}
 	
 	private List<CusteioParlamentarMensal> buscarDadosCusteioParlamentar(Optional<YearMonth> dataReferenciaUltimoCusteioSalvo) throws IOException {
