@@ -13,13 +13,13 @@ import lombok.extern.log4j.Log4j2;
 @RequiredArgsConstructor
 public class ServicoScrapAgendado {
 
-	private static final String TODO_DIA_AS_DUAS_E_QUINZE_DA_MANHA = "0 15 2 ? * TUE";
+	private static final String TODO_SEGUNDA_AS_DUAS_DA_MANHA = "0 0 2 ? * MON";
 	
 	private final ServicoScrap servicoScrap;
 	
 	
 	
-//	@Scheduled(cron = TODO_DIA_AS_DUAS_E_QUINZE_DA_MANHA)
+	@Scheduled(cron = TODO_SEGUNDA_AS_DUAS_DA_MANHA)
 	private void realizarScrap() {
 		try {
 			servicoScrap.realizarScrap();
