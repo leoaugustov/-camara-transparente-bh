@@ -1,9 +1,7 @@
 package camaratransparente.modelo.entidade;
 
-import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import javax.persistence.CascadeType;
@@ -63,27 +61,6 @@ public class ModeloVereador extends EntidadeBase {
 	public void adicionarPresencaReuniao(ModeloPresencaReuniao presenca) {
 		presenca.setVereador(this);
 		presencasReunioes.add(presenca);
-	}
-	
-	/**
-	 * Calcula a maior data de referência dentre todos os custeios do vereador.
-	 * @return a maior data de referência dentre todos os custeios
-	 */
-	public Optional<YearMonth> getMaiorDataReferenciaCusteio() {
-		return custeios.stream()
-				.map(ModeloCusteioParlamentar::getDataReferencia)
-				.max(YearMonth::compareTo);
-	}
-
-	/**
-	 * Calcula a maior data do exercício dentre todas as informações de presenca do vereador. 
-	 * @return a maior data do exercício dentre todas as informações de presenca
-	 */
-	public Optional<YearMonth> getMaiorDataExercicioPresenca() {
-		return presencasReunioes.stream()
-				.map(ModeloPresencaReuniao::getDataReuniao)
-				.map(YearMonth::from)
-				.max(YearMonth::compareTo);
 	}
 	
 	public double getMaiorCusteioMensal() {
