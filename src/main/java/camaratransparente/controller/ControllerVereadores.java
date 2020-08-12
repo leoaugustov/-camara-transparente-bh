@@ -33,7 +33,7 @@ public class ControllerVereadores {
 	}
 	
 	@GetMapping(path = "/{id}/foto", produces = MediaType.IMAGE_PNG_VALUE)
-	public ResponseEntity<?> pegarFoto(@PathVariable("id") Long id) {
+	public ResponseEntity<?> pegarFoto(@PathVariable("id") UUID id) {
 		return ResponseEntity.ok()
 				.header(HttpHeaders.CACHE_CONTROL, CacheControl.maxAge(4, TimeUnit.DAYS).getHeaderValue())
 				.body(servicoVereador.buscarFoto(id));

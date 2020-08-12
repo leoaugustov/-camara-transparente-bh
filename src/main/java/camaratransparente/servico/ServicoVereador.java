@@ -2,6 +2,7 @@ package camaratransparente.servico;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilderFactory;
 import org.springframework.stereotype.Service;
@@ -36,7 +37,7 @@ public class ServicoVereador {
 		List<ModeloVereadorDto> vereadoresDto = new ArrayList<>();
 		for(ModeloVereador vereador : vereadores) {
 			String linkFoto = linkBuilderFactory.linkTo(ControllerVereadores.class)
-					.slash(vereador.getId())
+					.slash(vereador.getUuid())
 					.slash("foto")
 					.toUri().toString();
 			
@@ -52,9 +53,9 @@ public class ServicoVereador {
 	}
 	
 	@Transactional(readOnly = true)
-	public byte[] buscarFoto(Long idVereador) {
-		if(repositorioVereador.existsById(idVereador)) {
-			return repositorioVereador.buscarFotoPorId(idVereador);
+	public byte[] buscarFoto(UUID idVereador) {
+		if(repositorioVereador.existsByUuid(idVereador)) {
+			return repositorioVereador.buscarFotoPorUuid(idVereador);
 		}
 		
 		throw new EntidadeNaoEncontradaException(idVereador);

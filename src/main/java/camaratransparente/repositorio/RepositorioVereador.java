@@ -1,6 +1,7 @@
 package camaratransparente.repositorio;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,6 +11,8 @@ import camaratransparente.modelo.entidade.ModeloVereador;
 
 public interface RepositorioVereador extends JpaRepository<ModeloVereador, Long> {
 
+	boolean existsByUuid(UUID uuid);
+	
 	@EntityGraph(attributePaths = {"custeios"})
 	@Query("SELECT v FROM ModeloVereador v")
 	List<ModeloVereador> buscarTodosComCusteio();
@@ -18,7 +21,7 @@ public interface RepositorioVereador extends JpaRepository<ModeloVereador, Long>
 	@Query("SELECT v FROM ModeloVereador v")
 	List<ModeloVereador> buscarTodosComPresencasReunioes();
 	
-	@Query("SELECT v.foto FROM ModeloVereador v WHERE v.id = ?1")
-	byte[] buscarFotoPorId(Long id);
+	@Query("SELECT v.foto FROM ModeloVereador v WHERE v.uuid = ?1")
+	byte[] buscarFotoPorUuid(UUID uuid);
 	
 }

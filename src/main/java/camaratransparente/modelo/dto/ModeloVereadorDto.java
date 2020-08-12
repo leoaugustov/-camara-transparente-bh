@@ -1,5 +1,7 @@
 package camaratransparente.modelo.dto;
 
+import java.util.UUID;
+
 import camaratransparente.modelo.EstatisticasPresencasReunioes;
 import camaratransparente.modelo.entidade.ModeloVereador;
 import lombok.Getter;
@@ -7,7 +9,7 @@ import lombok.Getter;
 @Getter
 public class ModeloVereadorDto {
 
-	private final Long id;
+	private final UUID id;
 	private final String nome;
 	private final String linkFoto;
 	private final double maiorCusteioMensal;
@@ -17,7 +19,7 @@ public class ModeloVereadorDto {
 	
 	
 	public ModeloVereadorDto(ModeloVereador vereador, String linkFoto, EstatisticasPresencasReunioes estatisticasPresencas) {
-		id = vereador.getId();
+		id = vereador.getUuid();
 		nome = vereador.getNome();
 		this.linkFoto = linkFoto;
 		maiorCusteioMensal = vereador.getMaiorCusteioMensal();

@@ -4,13 +4,17 @@ import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Type;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -23,6 +27,10 @@ import lombok.ToString;
 @Table(name = "vereador")
 public class ModeloVereador extends EntidadeBase {
 
+	@Column(nullable = false, unique = true)
+	@Type(type="org.hibernate.type.UUIDCharType")
+	private UUID uuid;
+	
 	@Column(nullable = false)
 	private String nome;
 	
@@ -88,6 +96,11 @@ public class ModeloVereador extends EntidadeBase {
 		return custeios.stream()
 				.mapToDouble(ModeloCusteioParlamentar::getValor)
 				.sum();
+	}
+	
+	@PrePersist
+	private void prePersistencia() {
+		uuid = UUID.randomUUID();
 	}
 	
 	@Override
