@@ -27,6 +27,7 @@ public class ScraperDadosVereadores {
 			Document paginaVereador = Jsoup.connect(linkPaginaVereador).get();
 
 			ModeloVereador vereador = new ModeloVereador();
+			vereador.setPerfilCmbh(linkPaginaVereador);
 			vereador.setNome(buscarNome(paginaVereador));
 			vereador.setNomeCivil(buscarNomeCivil(paginaVereador));
 			vereador.setFoto(buscarFoto(paginaVereador));

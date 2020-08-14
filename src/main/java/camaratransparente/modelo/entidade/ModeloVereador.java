@@ -42,6 +42,9 @@ public class ModeloVereador extends EntidadeBase {
 	
 	@Column(nullable = false)
 	private String partido;
+	
+	@Column(nullable = false)
+	private String perfilCmbh;
 
 	@OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "vereador")
 	@Setter(AccessLevel.NONE)
@@ -52,6 +55,10 @@ public class ModeloVereador extends EntidadeBase {
 	private List<ModeloPresencaReuniao> presencasReunioes = new ArrayList<>();
 	
 	
+	
+	public String getSiglaPartido() {
+		return partido.split("-")[0].trim();
+	}
 	
 	public void adicionarCusteio(ModeloCusteioParlamentar custeio) {
 		custeio.setVereador(this);

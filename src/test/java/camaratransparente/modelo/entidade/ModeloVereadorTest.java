@@ -1,5 +1,6 @@
 package camaratransparente.modelo.entidade;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -9,6 +10,24 @@ import org.junit.Test;
 public class ModeloVereadorTest {
 
 	private static final double DELTA = 0.001;
+	
+	
+	
+	@Test
+	public void testarGetSiglaPartido_quandoTracoSemEspacos() {
+		ModeloVereador vereador = new ModeloVereador();
+		vereador.setPartido("PP-Partido Partido");
+		
+		assertThat(vereador.getSiglaPartido()).isEqualTo("PP");
+	}
+	
+	@Test
+	public void testarGetSiglaPartido_quandoTracoComEspacos() {
+		ModeloVereador vereador = new ModeloVereador();
+		vereador.setPartido("PP - Partido Partido");
+		
+		assertThat(vereador.getSiglaPartido()).isEqualTo("PP");
+	}
 	
 	@Test
 	public void testarGetMaiorCusteioMensal_quando_naoPossuiInformacoesCusteio() {

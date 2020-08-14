@@ -29,16 +29,15 @@ public class ServicoCusteioParlamentar {
 		List<ModeloVereador> vereadores = repositorioVereador.buscarTodosComCusteio();
 		
 		Map<String, Double> custeioPorPartido = vereadores.stream()
-				.collect(toMap(ModeloVereador::getPartido, ModeloVereador::getCusteioTotal, Double::sum));
+				.collect(toMap(ModeloVereador::getSiglaPartido, ModeloVereador::getCusteioTotal, Double::sum));
 		
 		Map<String, Long> quantidadeVereadoresPorPartido = vereadores.stream()
-				.collect(groupingBy(ModeloVereador::getPartido, counting()));
+				.collect(groupingBy(ModeloVereador::getSiglaPartido, counting()));
 		
 		return custeioPorPartido.entrySet().stream().map(entry -> {
-			String siglaPartido = entry.getKey().split("-")[0];
 			long quantidadeVereadores = quantidadeVereadoresPorPartido.get(entry.getKey());
 			
-			return new ModeloCusteioPorPartidoDto(siglaPartido.trim(), quantidadeVereadores, entry.getValue());
+			return new ModeloCusteioPorPartidoDto(entry.getKey(), quantidadeVereadores, entry.getValue());
 		}).collect(toList());
 	}
 	
