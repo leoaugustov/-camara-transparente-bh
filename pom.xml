@@ -12,7 +12,7 @@
 	<artifactId>camaratransparente</artifactId>
 	<version>1.0.0</version>
 	<name>camaratransparente</name>
-	<description>Projeto desenvolvido durante a disciplina de Projeto Interdisciplinar realizada no primeiro semestre de 2020.</description>
+	<description></description>
 
 	<profiles>
 		<profile>
@@ -64,6 +64,18 @@
 		<dependency>
 		    <groupId>org.springframework.hateoas</groupId>
 		    <artifactId>spring-hateoas</artifactId>
+		</dependency>
+		
+		<!-- 		SPRING CACHE -->
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-cache</artifactId>
+		</dependency>
+
+		<!-- 		CAFFEINE -->
+		<dependency>
+		    <groupId>com.github.ben-manes.caffeine</groupId>
+		    <artifactId>caffeine</artifactId>
 		</dependency>
 		
 		<!-- 		MYSQL -->

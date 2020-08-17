@@ -4,7 +4,9 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Map;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import camaratransparente.modelo.entidade.ModeloScrap;
 import camaratransparente.repositorio.RepositorioScrap;
@@ -18,6 +20,8 @@ public class ServicoStatusScrap {
 	
 	
 	
+	@Transactional(readOnly = true)
+	@Cacheable("status-scrap")
 	public Map<String, LocalDateTime> pegarDataUltimaAtualizacao() {
 		LocalDateTime dataUltimaAtualizacao = repositorioScrap.findTopByOrderByIdDesc()
 				.map(ModeloScrap::getDataExecucao)

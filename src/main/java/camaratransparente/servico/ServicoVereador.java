@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilderFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +32,7 @@ public class ServicoVereador {
 	}
 	
 	@Transactional(readOnly = true)
+	@Cacheable("vereadores")
 	public List<ModeloVereadorDto> listar() {
 		List<ModeloVereador> vereadores = repositorioVereador.buscarTodosComPresencasReunioes();
 		
@@ -53,6 +55,7 @@ public class ServicoVereador {
 	}
 	
 	@Transactional(readOnly = true)
+	@Cacheable("foto-vereador")
 	public byte[] buscarFoto(UUID idVereador) {
 		if(repositorioVereador.existsByUuid(idVereador)) {
 			return repositorioVereador.buscarFotoPorUuid(idVereador);

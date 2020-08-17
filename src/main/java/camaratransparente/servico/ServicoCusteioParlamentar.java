@@ -8,6 +8,7 @@ import static java.util.stream.Collectors.counting;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +26,7 @@ public class ServicoCusteioParlamentar {
 	
 	
 	@Transactional(readOnly = true)
+	@Cacheable("custeio-por-partido")
 	public List<ModeloCusteioPorPartidoDto> listarPorPartido() {
 		List<ModeloVereador> vereadores = repositorioVereador.buscarTodosComCusteio();
 		
