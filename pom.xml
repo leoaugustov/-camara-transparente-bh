@@ -71,11 +71,26 @@
 		    <groupId>org.springframework.boot</groupId>
 		    <artifactId>spring-boot-starter-cache</artifactId>
 		</dependency>
+		<dependency>
+		    <groupId>javax.cache</groupId>
+		    <artifactId>cache-api</artifactId>
+		</dependency>
 
 		<!-- 		CAFFEINE -->
 		<dependency>
 		    <groupId>com.github.ben-manes.caffeine</groupId>
 		    <artifactId>caffeine</artifactId>
+		</dependency>
+		<dependency>
+		    <groupId>com.github.ben-manes.caffeine</groupId>
+		    <artifactId>jcache</artifactId>
+		</dependency>
+		
+		<!-- 		BUCKET4J -->
+		<dependency>
+		    <groupId>com.github.vladimir-bukhtoyarov</groupId>
+		    <artifactId>bucket4j-core</artifactId>
+		    <version>4.10.0</version>
 		</dependency>
 		
 		<!-- 		MYSQL -->
